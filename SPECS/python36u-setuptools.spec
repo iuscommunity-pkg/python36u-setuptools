@@ -7,16 +7,9 @@ Release:        1.ius%{?dist}
 Summary:        Easily build and distribute Python packages
 
 Group:          Applications/System
-# LIcensing is in flux, see https://bitbucket.org/pypa/setuptools/issues/132/missing-license
-License:        (Python or ZPLv2.0) and ASL 2.0
+License:        MIT
 URL:            https://pypi.python.org/pypi/%{srcname}
 Source0:        https://files.pythonhosted.org/packages/source/s/%{srcname}/%{srcname}-%{version}.zip
-# PSFL
-Source1:        https://hg.python.org/cpython/raw-file/tip/LICENSE
-# ZPL
-Source2:        https://raw.githubusercontent.com/zopefoundation/Zope/master/LICENSE.txt
-# ASL 2.0
-Source3:        http://www.apache.org/licenses/LICENSE-2.0
 
 BuildArch:      noarch
 BuildRequires:  python36u-devel
@@ -53,10 +46,6 @@ rm setuptools/tests/test_integration.py
 %install
 %py36_install
 
-install -p -m 0644 %{SOURCE1} psfl.txt
-install -p -m 0644 %{SOURCE2} zpl.txt
-install -p -m 0644 %{SOURCE3} asl.txt
-
 # Don't ship these
 rm -r docs/{Makefile,conf.py,_*}
 rm %{buildroot}%{_bindir}/easy_install
@@ -69,7 +58,7 @@ LANG=en_US.utf8 PYTHONPATH=$(pwd) py.test-%{python36_version}
 
 
 %files
-%license psfl.txt zpl.txt asl.txt
+%license LICENSE
 %doc docs/*
 %{python36_sitelib}/*
 %{_bindir}/easy_install-%{python36_version}
@@ -78,6 +67,7 @@ LANG=en_US.utf8 PYTHONPATH=$(pwd) py.test-%{python36_version}
 %changelog
 * Wed Jan 11 2017 Carl George <carl.george@rackspace.com> - 32.3.1-1.ius
 - Port from Fedora to IUS
+- License changed to MIT
 
 * Tue Jan 03 2017 Michal Cyprian <mcyprian@redhat.com> - 32.3.1-2
 - Use python macros in build and install sections
