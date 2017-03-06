@@ -2,7 +2,7 @@
 %global srcname setuptools
 
 Name:           python36u-setuptools
-Version:        32.3.1
+Version:        33.1.1
 Release:        1.ius%{?dist}
 Summary:        Easily build and distribute Python packages
 
@@ -65,6 +65,9 @@ LANG=en_US.utf8 PYTHONPATH=$(pwd) py.test-%{python36_version}
 
 
 %changelog
+* Mon Mar 06 2017 Carl George <carl.george@rackspace.com> - 33.1.1-1.ius
+- Update to version 33
+
 * Wed Jan 11 2017 Carl George <carl.george@rackspace.com> - 32.3.1-1.ius
 - Port from Fedora to IUS
 - License changed to MIT
