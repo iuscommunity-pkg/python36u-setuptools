@@ -1,21 +1,20 @@
+%global python python36u
 %global with_check 0
 %global srcname setuptools
 
-Name:           python36u-setuptools
+Name:           %{python}-%{srcname}
 Version:        33.1.1
 Release:        1.ius%{?dist}
 Summary:        Easily build and distribute Python packages
-
 Group:          Applications/System
 License:        MIT
 URL:            https://pypi.python.org/pypi/%{srcname}
 Source0:        https://files.pythonhosted.org/packages/source/s/%{srcname}/%{srcname}-%{version}.zip
-
 BuildArch:      noarch
-BuildRequires:  python36u-devel
+BuildRequires:  %{python}-devel
 %if 0%{?with_check}
-BuildRequires:  python36u-pytest
-BuildRequires:  python36u-mock
+BuildRequires:  %{python}-pytest
+BuildRequires:  %{python}-mock
 %endif # with_check
 
 
@@ -31,10 +30,8 @@ execute the software that requires pkg_resources.py.
 %prep
 %setup -q -n %{srcname}-%{version}
 
-# Strip shbang
+# Strip shebangs
 find setuptools -name \*.py | xargs sed -i -e '1 {/^#!\//d}'
-# Remove bundled exes
-rm -f setuptools/*.exe
 # These tests require internet connection
 rm setuptools/tests/test_integration.py 
 
