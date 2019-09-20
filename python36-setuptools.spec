@@ -1,10 +1,10 @@
-%global python python36u
+%global python python36
 %global with_check 0
 %global srcname setuptools
 
 Name:           %{python}-%{srcname}
 Version:        39.0.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Easily build and distribute Python packages
 License:        MIT
 URL:            https://pypi.python.org/pypi/%{srcname}
@@ -16,6 +16,9 @@ BuildRequires:  %{python}-pytest
 BuildRequires:  %{python}-mock
 %endif # with_check
 
+# Rename from python36u-setuptools
+Provides: python36u-setuptools = %{version}-%{release}
+Obsoletes: python36u-setuptools < 39.0.1-2
 
 %description
 Setuptools is a collection of enhancements to the Python distutils that allow
@@ -67,6 +70,9 @@ LANG=en_US.utf8 PYTHONPATH=$(pwd) py.test-%{python36_version}
 
 
 %changelog
+* Fri Sep 20 2019 Carl George <carl@george.computer> - 39.0.1-2
+- Rename to python36-setuptools
+
 * Tue Mar 27 2018 Carl George <carl@george.computer> - 39.0.1-1.ius
 - Latest upstream
 - Include CHANGES.rst and README.rst
