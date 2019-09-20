@@ -2,13 +2,17 @@
 %global with_check 0
 %global srcname setuptools
 
+%if %{defined el6}
+%global __python3 /usr/bin/python3.6
+%endif
+
 Name:           %{python}-%{srcname}
 Version:        39.0.1
 Release:        2%{?dist}
 Summary:        Easily build and distribute Python packages
 License:        MIT
 URL:            https://pypi.python.org/pypi/%{srcname}
-Source0:        https://files.pythonhosted.org/packages/source/s/%{srcname}/%{srcname}-%{version}.zip
+Source0:        %pypi_source %{srcname} %{version} zip
 BuildArch:      noarch
 BuildRequires:  %{python}-devel
 %if 0%{?with_check}
@@ -41,11 +45,11 @@ rm setuptools/tests/test_integration.py
 
 
 %build
-%py36_build
+%py3_build
 
 
 %install
-%py36_install
+%py3_install
 
 # Don't ship these
 rm -r docs/{Makefile,conf.py,_*}
@@ -54,24 +58,25 @@ rm %{buildroot}%{_bindir}/easy_install
 
 %if 0%{?with_check}
 %check
-LANG=en_US.utf8 PYTHONPATH=$(pwd) py.test-%{python36_version}
+LANG=en_US.utf8 PYTHONPATH=$(pwd) py.test-%{python3_version}
 %endif # with_check
 
 
 %files
 %license LICENSE
 %doc docs/* CHANGES.rst README.rst
-%{python36_sitelib}/easy_install.py
-%{python36_sitelib}/__pycache__/easy_install.cpython-36*.pyc
-%{python36_sitelib}/pkg_resources/
-%{python36_sitelib}/setuptools/
-%{python36_sitelib}/setuptools-%{version}-py3.6.egg-info
-%{_bindir}/easy_install-%{python36_version}
+%{python3_sitelib}/easy_install.py
+%{python3_sitelib}/__pycache__/easy_install.cpython-%{python3_version_nodots}*.py*
+%{python3_sitelib}/pkg_resources/
+%{python3_sitelib}/setuptools/
+%{python3_sitelib}/setuptools-%{version}-py%{python3_version}.egg-info
+%{_bindir}/easy_install-%{python3_version}
 
 
 %changelog
 * Fri Sep 20 2019 Carl George <carl@george.computer> - 39.0.1-2
 - Rename to python36-setuptools
+- Switch to EPEL python3 macros
 
 * Tue Mar 27 2018 Carl George <carl@george.computer> - 39.0.1-1.ius
 - Latest upstream
