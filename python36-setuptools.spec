@@ -13,6 +13,12 @@ Summary:        Easily build and distribute Python packages
 License:        MIT
 URL:            https://github.com/pypa/setuptools
 Source0:        %pypi_source %{srcname} %{version} zip
+# In Fedora, sudo setup.py install installs to /usr/local/lib/pythonX.Y/site-packages
+# But pythonX doesn't own that dir, that would be against FHS
+# We need to create it if it doesn't exist
+# https://bugzilla.redhat.com/show_bug.cgi?id=1576924
+Patch0:         create-site-packages.patch
+
 BuildArch:      noarch
 BuildRequires:  %{python}-devel
 %if 0%{?with_check}
@@ -34,7 +40,7 @@ execute the software that requires pkg_resources.py.
 
 
 %prep
-%setup -q -n %{srcname}-%{version}
+%autosetup -n %{srcname}-%{version} -p 1
 
 # Strip shebangs
 find setuptools -name \*.py | xargs sed -i -e '1 {/^#!\//d}'
@@ -76,6 +82,7 @@ LANG=en_US.utf8 PYTHONPATH=$(pwd) py.test-%{python3_version}
 %changelog
 * Fri Sep 20 2019 Carl George <carl@george.computer> - 39.2.0-4
 - Update to 39.2.0 and bump release higher than EPEL
+- Create /usr/local/lib/pythonX.Y when needed (rhbz#1664722) (EPEL patch)
 
 * Fri Sep 20 2019 Carl George <carl@george.computer> - 39.0.1-2
 - Rename to python36-setuptools
